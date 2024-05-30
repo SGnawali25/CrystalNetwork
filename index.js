@@ -23,6 +23,10 @@ AWS.config.update({
 
 const s3 = new AWS.S3();
 
+app.get('/', (req, res) =>{
+  res.send("Welcome to the Consensus Hackathon!")
+})
+
 app.get('/list', (req, res) => {
     const params = {
       Bucket: process.env.S3_BUCKET_NAME // Add your bucket name
