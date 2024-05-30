@@ -5,7 +5,7 @@ const fs = require('fs');
 const dotenv = require('dotenv');
 
 const app = express();
-const port = 3000;
+
 
 // Set up multer for file uploads
 const upload = multer({ dest: 'uploads/' });
@@ -92,6 +92,6 @@ app.post('/upload', upload.single('file'), (req, res) => {
   });
 });
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+app.listen(process.env.PORT, () => {
+  console.log(`Server running at http://localhost:${process.env.PORT}`);
 });
