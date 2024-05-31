@@ -9,6 +9,8 @@ const dotenv = require('dotenv');
 const app = express();
 
 
+const posts = []
+
 app.use("*",cors({
   origin: true,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -35,6 +37,25 @@ const upload = multer({ dest: 'uploads/' });
 
 app.get('/', (req, res) =>{
   res.send("Welcome to the Consensus Hackathon!")
+})
+
+app.get('/feed', async (req, res) => {
+  let results = []
+  for(let i = 0; i < posts.length; i++){
+    const key = posts[i].video.name;
+
+    const params = {
+        Bucket: process.env.S3_BUCKET_NAME,
+        Key: key
+    };
+
+    let r = await s3.getSignedUrl('getObject', params);
+    results.push({
+      address: posts[i].address,
+      videoUrl: r
+    })
+  }
+  res.send(results)
 })
 
 app.get('/list', (req, res) => {
@@ -86,7 +107,11 @@ app.get("/video/:key", (req, res) => {
 
 
 
-app.post('/upload', upload.single('file'), (req, res) => {
+app.post('/upload', upload.single('file'), async (req, res) => {
+  console.log(req.body)
+
+  const address = req.body.address
+  const name = req.body.name
   // Read the file from the file system
   const fileContent = fs.readFileSync(req.file.path);
   
@@ -99,13 +124,18 @@ app.post('/upload', upload.single('file'), (req, res) => {
   };
 
   // Uploading files to the bucket
-  s3.upload(params, (err, data) => {
-    if (err) {
-      throw err;
+  let data = await s3.upload(params).promise();
+  console.log(`File uploaded successfully. ${data.Location}`);
+
+  posts.push({
+    address: address,
+    video: {
+      location: data.Location,
+      name: name
     }
-    console.log(`File uploaded successfully. ${data.Location}`);
-    res.send(`File uploaded successfully. ${data.Location}`);
-  });
+  })
+
+  res.send(`File uploaded successfully. ${data.Location}`);
 });
 
 app.listen(process.env.PORT, () => {
