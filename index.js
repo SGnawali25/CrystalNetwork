@@ -157,7 +157,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
   let data = await s3.upload(params).promise();
   console.log(`File uploaded successfully. ${data.Location}`);
 
-  posts.push({
+  const newPost = {
     id: idCounter++,
     address: address,
     video: {
@@ -165,9 +165,10 @@ app.post('/upload', upload.single('file'), async (req, res) => {
       name: name
     },
     upvotes: 1,
-  })
+  }
+  posts.push(newPost)
 
-  res.send(`File uploaded successfully. ${data.Location}`);
+  res.send(newPost);
 });
 
 app.listen(process.env.PORT, () => {
