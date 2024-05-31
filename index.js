@@ -8,6 +8,12 @@ const dotenv = require('dotenv');
 const app = express();
 
 
+app.use("*",cors({
+  origin: true,
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+}));
+
 //setting up config file
 dotenv.config({path:'config.env'})
 
