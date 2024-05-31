@@ -9,7 +9,19 @@ const dotenv = require('dotenv');
 const app = express();
 
 
-const posts = []
+const posts = [{
+  address:"0x1234567890abcdef1234567890abcdef12345678",
+  video:{
+    location:"https://conshack.s3.us-east-2.amazonaws.com/WhatsApp%20Video%202024-05-11%20at%2010.28.27%20AM.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIASFEBHVXT3AQM6NOO%2F20240531%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20240531T054946Z&X-Amz-Expires=900&X-Amz-Signature=c7f8a872f6d9eab71e0e5e25d0ccb96d81b3955bb73cc364ae7742f74903a18b&X-Amz-SignedHeaders=host",
+    name:"WhatsApp Video 2024-05-11 at 10.28.27 AM.mp4"
+  }
+},{
+  address:"0xabcdefabcdefabcdefabcdefabcdefabcdefabcd",
+  video:{
+    location:"https://conshack.s3.us-east-2.amazonaws.com/blob?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIASFEBHVXT3AQM6NOO%2F20240531%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20240531T054539Z&X-Amz-Expires=900&X-Amz-Signature=bb594b17a06f4c0eac8a69230892019010bd4b644543d616304ef276647c61de&X-Amz-SignedHeaders=host",
+    name:"blob"
+  }
+}]
 
 app.use("*",cors({
   origin: true,
